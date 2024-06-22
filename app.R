@@ -6,8 +6,11 @@
 # -----------------------------------------------------------------------------
 
 ui <- fluidPage(
+  # title
   titlePanel("Warm-up Set Generator for One Rep Max"),
+  # lil info box
   fluidRow(
+    # 12 = width
     column(12,
             wellPanel(
               p("This app allows you to input weights and reps completed
@@ -17,9 +20,11 @@ ui <- fluidPage(
                 on your predicted one rep max.")
             ))
   ),
+  # sectioning
   sidebarLayout(
     sidebarPanel(
-      HTML("Enter the weight and number of reps for however many sets
+      # p for paragraph (ie <p> html tag)
+      p("Enter the weight and number of reps for however many sets
            you have recorded. The weight can be in any unit as long as
            you are consistent."),
       numericInput("wt", "Weight",
@@ -30,7 +35,6 @@ ui <- fluidPage(
                    min = 1),
       actionButton("addSet", "Add Set"),
       actionButton("clearSets", "Clear Sets"),
-      hr(),
       tableOutput("inputTable")
       ),
     mainPanel(
@@ -41,11 +45,14 @@ ui <- fluidPage(
 
 
 server <- function(input, output, session) {
+  
+  # stores wt and rep data
   sets <- reactiveValues(data = data.frame(
     Weight = numeric(0), 
     Reps = integer(0)
   ))
   
+  # appends row to df sets
   observeEvent(input$addSet, {
     new_set <- data.frame(
       Weight = input$wt,
@@ -54,20 +61,25 @@ server <- function(input, output, session) {
     sets$data <- rbind(sets$data, new_set)
   })
   
+  # clears sets df
   observeEvent(input$clearSets, {
     sets$data <- data.frame(Weight = numeric(0), Reps = integer(0))
   })
   
+  # creates table from sets df
   output$inputTable <- renderTable({
     sets$data
   }, rownames = FALSE)
   
+  # predict one rep max using Epley formula for each row in df
+  # average entire col
   predicted_max <- reactive({
     if (nrow(sets$data) == 0) return(0)
     predicted_max_values <- (sets$data$Reps * sets$data$Weight * 0.0333) + sets$data$Weight
     mean(predicted_max_values)
   })
   
+  # generate warm-up sets df
   warm_up_sets <- reactive({
     if (predicted_max() == 0) return(NULL)
     data.frame(
@@ -81,9 +93,11 @@ server <- function(input, output, session) {
     )
   })
   
+  # render warm-up sets df
   output$warmUpTable <- renderTable({
     warm_up_sets()
   }, rownames = FALSE)
 }
 
+# execute app
 shinyApp(ui, server)
