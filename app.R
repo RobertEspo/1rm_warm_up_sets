@@ -16,7 +16,7 @@ ui <- fluidPage(
              p("This app allows you to input weights and reps completed
                 to determine what your one rep max may be.",
                br(),
-               "It genereates your 1RM based on the Epley formula (left box)
+               "It genereates your 1RM based on the Epley formula
                and the Bryzcki formula.",
                br(),
                "It automatically generates warm up sets for you based 
