@@ -7,7 +7,7 @@
 
 ui <- fluidPage(
   # title
-  titlePanel("Warm-up Set Generator for One Rep Max"),
+  titlePanel("Warm-up Sets Generator for One Rep Max"),
   # lil info box
   fluidRow(
     # 12 = width
@@ -20,7 +20,17 @@ ui <- fluidPage(
                and the Bryzcki formula.",
                br(),
                "It automatically generates warm up sets for you based 
-                on your predicted one rep max from each formula.")
+                on your predicted 1RM from each formula.",
+               br(),
+               "As this app currently is, you can enter multiple sets.
+               However, it is recommended to enter only the most
+               relevant set or sets (e.g. your most recent lift(s)
+               that is close to your submaximal with at least 8 reps.",
+               br(),
+               "If you already have a 1RM goal, enter the target weight and
+               1 rep, which will generate warm-up sets based on that.
+               It is recommended that you follow the warm-up sets 
+               based on Bryzcki's formula in this case.")
            ))
   ),
   # sectioning
